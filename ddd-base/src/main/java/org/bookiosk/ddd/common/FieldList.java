@@ -22,11 +22,14 @@ public final class FieldList<T> implements Serializable {
     private final List<T> values;
 
     private FieldList(List<T> values) {
-        this.values = Collections.unmodifiableList(values == null ? new ArrayList<>() : new ArrayList<>(values));
+        this.values = Collections.unmodifiableList(new ArrayList<>(values));
     }
 
-    public static <T> FieldList<T> of(List<T> values) { return new FieldList<>(values); }
-    public static <T> FieldList<T> empty() { return new FieldList<>(null); }
+    public static <T> FieldList<T> of(List<T> values) {
+        return values == null || values.isEmpty() ? empty() : new FieldList<>(values);
+    }
+
+    public static <T> FieldList<T> empty() { return new FieldList<>(Collections.emptyList()); }
 
     public List<T> get() { return values; }
 

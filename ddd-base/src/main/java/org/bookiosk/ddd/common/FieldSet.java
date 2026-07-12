@@ -22,11 +22,14 @@ public final class FieldSet<T> implements Serializable {
     private final Set<T> values;
 
     private FieldSet(Set<T> values) {
-        this.values = Collections.unmodifiableSet(values == null ? new HashSet<>() : new HashSet<>(values));
+        this.values = Collections.unmodifiableSet(new HashSet<>(values));
     }
 
-    public static <T> FieldSet<T> of(Set<T> values) { return new FieldSet<>(values); }
-    public static <T> FieldSet<T> empty() { return new FieldSet<>(null); }
+    public static <T> FieldSet<T> of(Set<T> values) {
+        return values == null || values.isEmpty() ? empty() : new FieldSet<>(values);
+    }
+
+    public static <T> FieldSet<T> empty() { return new FieldSet<>(Collections.emptySet()); }
 
     public Set<T> get() { return values; }
 

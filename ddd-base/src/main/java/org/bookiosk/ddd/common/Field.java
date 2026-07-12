@@ -20,7 +20,7 @@ public final class Field<T> implements Serializable {
     }
 
     public static <T> Field<T> of(T value) {
-        return new Field<>(value);
+        return value == null ? empty() : new Field<>(value);
     }
 
     public static <T> Field<T> empty() {
@@ -32,7 +32,7 @@ public final class Field<T> implements Serializable {
     public boolean isPresent() { return value != null; }
 
     public <R> Field<R> map(java.util.function.Function<? super T, ? extends R> mapper) {
-        return Field.of(mapper.apply(value));
+        return isPresent() ? Field.of(mapper.apply(value)) : Field.empty();
     }
 
     public T orElse(T other) {
