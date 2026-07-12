@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.bookiosk</groupId>
+        <artifactId>bookiosk-ddd</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ddd-base</artifactId>
+    <name>ddd-base</name>
+    <description>Base classes and core types for the bookiosk DDD framework.
+        Includes ResultDO, Field wrappers, aggregate/entity/value base classes,
+        repository interface, application service markers, DTO base, exceptions, and distributed lock.</description>
+
+    <dependencies>
+        <!-- Zero external dependencies — pure Java 8+ -->
+    </dependencies>
+</project>
