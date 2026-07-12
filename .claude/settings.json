@@ -1,0 +1,10 @@
+{
+  "skills": {
+    "ddd-check-incremental": {
+      "path": "ddd-skill/ddd-check-incremental.md"
+    },
+    "ddd-check-full": {
+      "path": "ddd-skill/ddd-check-full.md"
+    }
+  }
+}
