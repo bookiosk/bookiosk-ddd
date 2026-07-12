@@ -20,5 +20,5 @@ public abstract class BaseAggregate<ID extends Serializable> implements Serializ
     private ID id;
 
     public ID getId() { return id; }
-    public void setId(ID id) { this.id = id; }
+    protected void setId(ID id) { this.id = id; }
 }
