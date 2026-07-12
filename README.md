@@ -8,7 +8,7 @@ Production-ready DDD (Domain-Driven Design) framework based on Hexagonal Archite
 
 ```xml
 <dependency>
-    <groupId>org.bookiosk</groupId>
+    <groupId>io.github.bookiosk</groupId>
     <artifactId>ddd-base</artifactId>
     <version>1.0.0</version>
 </dependency>
@@ -17,7 +17,7 @@ Production-ready DDD (Domain-Driven Design) framework based on Hexagonal Archite
 ### Gradle
 
 ```groovy
-implementation 'org.bookiosk:ddd-base:1.0.0'
+implementation 'io.github.bookiosk:ddd-base:1.0.0'
 ```
 
 Zero external dependencies — pure Java 8+.
