@@ -26,11 +26,11 @@ public class ResultDO<T> implements Serializable {
     }
 
     public static <T> ResultDO<T> buildSuccessResult(T data) {
-        return new ResultDO<>(true, "SUCCESS", null, data);
+        return new ResultDO<>(true, "SUCCESS", "", data);
     }
 
     public static <T> ResultDO<T> buildSuccessResult() {
-        return new ResultDO<>(true, "SUCCESS", null, null);
+        return new ResultDO<>(true, "SUCCESS", "", null);
     }
 
     public static <T> ResultDO<T> buildFailResult(String code, String msg) {
@@ -42,6 +42,7 @@ public class ResultDO<T> implements Serializable {
     }
 
     public boolean isSuccess() { return success; }
+    public boolean isFail() { return !success; }
     public String getCode() { return code; }
     public String getMsg() { return msg; }
     public T getData() { return data; }

@@ -16,5 +16,5 @@ public abstract class BaseEntity<ID extends Serializable> implements Serializabl
     private ID id;
 
     public ID getId() { return id; }
-    public void setId(ID id) { this.id = id; }
+    protected void setId(ID id) { this.id = id; }
 }

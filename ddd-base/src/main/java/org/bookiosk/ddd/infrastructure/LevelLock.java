@@ -2,7 +2,7 @@ package org.bookiosk.ddd.infrastructure;
 
 /**
  * Distributed lock abstraction for concurrency safety in write operations.
- * Constructed by Repository implementation in the Infrastructure layer.
+ * Implementations should use Redis, ZooKeeper, or database locks.
  *
  * <pre>{@code
  * LevelLock lock = orderRepository.buildLock("order:confirmPayment:" + orderId);
@@ -16,22 +16,19 @@ package org.bookiosk.ddd.infrastructure;
  * }
  * }</pre>
  */
-public class LevelLock {
+public abstract class LevelLock {
 
     private final String lockKey;
 
-    public LevelLock(String lockKey) {
+    protected LevelLock(String lockKey) {
         this.lockKey = lockKey;
     }
 
-    /** Attempt to acquire the lock (non-blocking). Override for real implementation. */
-    public boolean tryLock() {
-        return true;
-    }
+    /** Attempt to acquire the lock (non-blocking). */
+    public abstract boolean tryLock();
 
-    /** Release the lock. Override for real implementation. */
-    public void unlock() {
-    }
+    /** Release the lock. */
+    public abstract void unlock();
 
     public String getLockKey() {
         return lockKey;
