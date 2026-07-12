@@ -1,11 +1,8 @@
-package org.bookiosk.ddd.common;
+package org.bookiosk.ddd.domain;
 
 /**
- * Thrown when business logic validation fails.
- * Caught by application layer and converted to Response failure.
- * Use with {@link Assert} for concise validation.
- *
- * Convention: error codes prefixed with B_ (business, user-correctable) or S_ (system, non-user-correctable).
+ * Thrown when DomainService business logic validation fails.
+ * Caught by DomainService itself and converted to ResultDO failure.
  */
 public class BizException extends RuntimeException {
 
