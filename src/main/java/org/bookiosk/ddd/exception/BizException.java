@@ -20,4 +20,6 @@ public class BizException extends RuntimeException {
     }
 
     public String getCode() { return code; }
+
+    public String getMsg() { return getMessage(); }
 }
