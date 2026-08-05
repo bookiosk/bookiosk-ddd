@@ -1,8 +1,12 @@
 package org.bookiosk.ddd.exception;
 
 /**
- * Thrown by Repository implementations when data access fails.
- * Caught at infrastructure boundary and converted to ResultDO failure.
+ * Blocking business exception (阻断型) thrown by Repository implementations
+ * when data access fails (DB / cache unavailable, optimistic-lock miss, etc.).
+ *
+ * <p>Propagates through DomainService / Adaptor without being caught — only the
+ * Application Service (AppService) catches it and converts it to
+ * {@code ResultDO.fail(code, msg)} at the single choke point.
  */
 public class RepositoryException extends BizException {
 

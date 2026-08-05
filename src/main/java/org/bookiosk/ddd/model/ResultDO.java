@@ -5,7 +5,16 @@ import java.util.Objects;
 
 /**
  * Universal operation result wrapper.
- * All methods across all layers return ResultDO — exceptions never cross layer boundaries.
+ *
+ * <p>Used in two modes:
+ * <ul>
+ *   <li><b>Branch (分支型)</b>: returned from DomainService/Adaptor when the caller needs
+ *       the failure data to make a decision — use {@link #buildFailResult(String, String, Object)}
+ *       to carry data.</li>
+ *   <li><b>Contract envelope</b>: returned from AppService to clients. Blocking exceptions
+ *       ({@code BizException}/{@code AggregateException}/{@code RepositoryException}) are
+ *       caught at the AppService choke point and converted here.</li>
+ * </ul>
  *
  * @param <T> data payload type, Void for operations with no return data
  */
@@ -35,6 +44,13 @@ public class ResultDO<T> implements Serializable {
 
     public static <T> ResultDO<T> buildFailResult(String code, String msg) {
         return new ResultDO<>(false, Objects.requireNonNull(code, "code"), Objects.requireNonNull(msg, "msg"), null);
+    }
+
+    /**
+     * 分支型失败结果 —— 携带 data 供调用方分支决策（如重复下单返回已有订单、缓存未命中返回 key）。
+     */
+    public static <T> ResultDO<T> buildFailResult(String code, String msg, T data) {
+        return new ResultDO<>(false, Objects.requireNonNull(code, "code"), Objects.requireNonNull(msg, "msg"), data);
     }
 
     public static <T> ResultDO<T> buildFailResult(String msg) {

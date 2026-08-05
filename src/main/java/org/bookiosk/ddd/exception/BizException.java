@@ -1,8 +1,14 @@
 package org.bookiosk.ddd.exception;
 
 /**
- * Thrown when DomainService business logic validation fails.
- * Caught by DomainService itself and converted to ResultDO failure.
+ * Blocking business exception (阻断型) thrown when business validation fails.
+ *
+ * <p>Thrown by DomainService / Adaptor. It propagates through inner layers WITHOUT
+ * being caught — only the Application Service (AppService) catches it and converts
+ * it to a {@code ResultDO.fail(code, msg)} at the single choke point.
+ *
+ * <p>Counterpart of branch-style failures: when the caller needs the failure data
+ * to make a decision, return {@code ResultDO.fail(code, msg, data)} instead of throwing.
  */
 public class BizException extends RuntimeException {
 

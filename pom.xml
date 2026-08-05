@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.bookiosk</groupId>
-    <artifactId>ddd-base</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <artifactId>ddd-framework</artifactId>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
 
-    <name>ddd-base</name>
+    <name>ddd-framework</name>
     <description>Production-ready DDD (Domain-Driven Design) framework based on Hexagonal Architecture.
         Zero external dependencies — pure Java 8+.</description>
     <url>https://github.com/bookiosk/bookiosk-ddd</url>
@@ -49,7 +49,14 @@
     </properties>
 
     <dependencies>
-        <!-- Zero external dependencies — pure Java 8+ -->
+        <!-- Zero external runtime dependencies — pure Java 8+ -->
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

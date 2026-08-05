@@ -5,7 +5,10 @@ import java.io.Serializable;
 /**
  * Base class for all entities.
  * Entities have identity but exist within an aggregate boundary.
- * All entity properties MUST use Field, FieldSet, or FieldList wrappers.
+ * All entity properties MUST use Field wrapper.
+ *
+ * <p>{@link #setId} is public ONLY for Infrastructure-layer hydration (Repository/Converter
+ * on load, or ID backfill after insert). External business code must not reassign identity.
  *
  * @param <ID> the entity identity type
  */
@@ -16,5 +19,7 @@ public abstract class BaseEntity<ID extends Serializable> implements Serializabl
     private ID id;
 
     public ID getId() { return id; }
-    protected void setId(ID id) { this.id = id; }
+
+    /** Infrastructure hydration only — Repository/Converter set the ID on load or backfill. */
+    public void setId(ID id) { this.id = id; }
 }

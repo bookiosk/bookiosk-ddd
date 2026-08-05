@@ -11,6 +11,9 @@ import java.io.Serializable;
  * DB surrogate keys belong in the Infrastructure layer (PO) and must not leak into the domain.
  * For sharding scenarios, the aggregate ID doubles as the shard key.
  *
+ * <p>{@link #setId} is public ONLY for Infrastructure-layer hydration (Repository/Converter
+ * on load, or ID backfill after insert). External business code must not reassign identity.
+ *
  * @param <ID> the business identity type (String orderNo, Long userId, value object, etc.)
  */
 public abstract class BaseAggregate<ID extends Serializable> implements Serializable {
@@ -20,5 +23,7 @@ public abstract class BaseAggregate<ID extends Serializable> implements Serializ
     private ID id;
 
     public ID getId() { return id; }
-    protected void setId(ID id) { this.id = id; }
+
+    /** Infrastructure hydration only — Repository/Converter set the ID on load or backfill. */
+    public void setId(ID id) { this.id = id; }
 }
