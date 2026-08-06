@@ -16,14 +16,7 @@ import java.io.Serializable;
  *
  * @param <ID> the business identity type (String orderNo, Long userId, value object, etc.)
  */
-public abstract class BaseAggregate<ID extends Serializable> implements Serializable {
+public abstract class BaseAggregate<ID extends Serializable> extends BaseEntity<ID> {
 
     private static final long serialVersionUID = 1L;
-
-    private ID id;
-
-    public ID getId() { return id; }
-
-    /** Infrastructure hydration only — Repository/Converter set the ID on load or backfill. */
-    public void setId(ID id) { this.id = id; }
 }

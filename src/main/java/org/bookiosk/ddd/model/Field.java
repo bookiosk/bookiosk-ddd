@@ -2,10 +2,21 @@ package org.bookiosk.ddd.model;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
- * Immutable single-value wrapper for entity properties.
- * Every mutation creates a new Field instance — never mutates in-place.
+ * Mutable single-value holder for entity properties with change tracking.
+ *
+ * <p>{@link #set} mutates in place and marks the field as changed. Change is
+ * detected by comparing the new value against the current one via
+ * {@link #equalsValue}: setting an equal value is a no-op and does not mark the
+ * field dirty. The {@code changed} flag defaults to {@code false} and is only
+ * set when the value actually changes.
+ *
+ * <p>The flag is intentionally never reset in place. Per the framework contract
+ * a saved aggregate/entity must not be reused — {@code Repository.save()} then
+ * re-query ({@code findById}) for further work, which reconstructs the object
+ * graph with fresh flags.
  *
  * @param <T> the wrapped value type
  */
@@ -13,14 +24,15 @@ public final class Field<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final T value;
+    private T value;
+    private boolean changed = false;
 
     private Field(T value) {
         this.value = value;
     }
 
     public static <T> Field<T> of(T value) {
-        return value == null ? empty() : new Field<>(value);
+        return new Field<>(value);
     }
 
     public static <T> Field<T> empty() {
@@ -31,12 +43,32 @@ public final class Field<T> implements Serializable {
 
     public boolean isPresent() { return value != null; }
 
-    public <R> Field<R> map(java.util.function.Function<? super T, ? extends R> mapper) {
-        return isPresent() ? Field.of(mapper.apply(value)) : Field.empty();
+    /** Null-safe comparison of the current value against {@code other}. */
+    public boolean equalsValue(T other) {
+        return Objects.equals(value, other);
     }
+
+    /**
+     * Sets a new value. Marks this field as changed unless the new value equals
+     * the current one.
+     */
+    public void set(T newValue) {
+        if (equalsValue(newValue)) {
+            return;
+        }
+        this.value = newValue;
+        this.changed = true;
+    }
+
+    /** Whether the value differs from the one at construction (or last load). */
+    public boolean isChanged() { return changed; }
 
     public T orElse(T other) {
         return value != null ? value : other;
+    }
+
+    public <R> Field<R> map(Function<? super T, ? extends R> mapper) {
+        return isPresent() ? Field.of(mapper.apply(value)) : Field.empty();
     }
 
     @Override
@@ -51,5 +83,5 @@ public final class Field<T> implements Serializable {
     public int hashCode() { return Objects.hash(value); }
 
     @Override
-    public String toString() { return "Field{" + value + "}"; }
+    public String toString() { return "Field{" + value + ", changed=" + changed + "}"; }
 }

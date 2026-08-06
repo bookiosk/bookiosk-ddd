@@ -71,4 +71,49 @@ public class FieldTest {
         Field<String> field = Field.of("hello");
         assertTrue(field.toString().contains("hello"));
     }
+
+    @Test
+    public void set_differentValue_shouldMarkChanged() {
+        Field<String> field = Field.of("hello");
+        field.set("world");
+        assertTrue(field.isChanged());
+        assertEquals("world", field.get());
+    }
+
+    @Test
+    public void set_sameValue_shouldNotMarkChanged() {
+        Field<String> field = Field.of("hello");
+        field.set("hello");
+        assertFalse(field.isChanged());
+    }
+
+    @Test
+    public void set_nullFromValue_shouldMarkChanged() {
+        Field<String> field = Field.of("hello");
+        field.set(null);
+        assertTrue(field.isChanged());
+        assertFalse(field.isPresent());
+    }
+
+    @Test
+    public void set_nullWhenAlreadyNull_shouldNotMarkChanged() {
+        Field<String> field = Field.empty();
+        field.set(null);
+        assertFalse(field.isChanged());
+    }
+
+    @Test
+    public void freshField_shouldNotBeChanged() {
+        Field<String> field = Field.of("hello");
+        assertFalse(field.isChanged());
+    }
+
+    @Test
+    public void equalsValue_shouldBeNullSafe() {
+        Field<String> field = Field.of("hello");
+        assertTrue(field.equalsValue("hello"));
+        assertFalse(field.equalsValue(null));
+        Field<String> empty = Field.empty();
+        assertTrue(empty.equalsValue(null));
+    }
 }
