@@ -6,7 +6,8 @@ import java.io.Serializable;
 
 /**
  * Base class for all entities.
- * Entities have identity but exist within an aggregate boundary.
+ * Entities have identity and a soft-delete flag ({@link #getDeleted()}) but
+ * live within an aggregate boundary.
  * All entity properties MUST use the {@link Field} wrapper so that changes can
  * be tracked for incremental persistence.
  *
@@ -23,16 +24,26 @@ import java.io.Serializable;
  *
  * @param <ID> the entity identity type
  */
-public abstract class BaseEntity<ID extends Serializable> implements Changeable, Serializable {
+public abstract class BaseEntity<ID extends Serializable> implements Entity<ID>, Changeable, Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private ID id;
 
+    private boolean deleted;
+
+    @Override
     public ID getId() { return id; }
 
-    /** Infrastructure hydration only — Repository/Converter set the ID on load or backfill. */
+    /** Infrastructure usage only — Repository/Converter set the ID on load or backfill. */
+    @Override
     public void setId(ID id) { this.id = id; }
+
+    @Override
+    public boolean getDeleted() { return deleted; }
+
+    @Override
+    public void setDeleted(boolean deleted) { this.deleted = deleted; }
 
     /** Whether this entity is not yet persisted (identity not assigned). */
     public boolean isAppend() { return id == null; }
